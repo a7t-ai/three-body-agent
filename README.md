@@ -283,6 +283,18 @@ If you run on fully isolated, disposable runners (Docker containers, VMs), you c
 
 <video src="https://github.com/user-attachments/assets/2aa1bf2d-b856-4339-b230-372007655d21" controls></video>
 
+## How This Relates to Claude Managed Agents
+
+Anthropic launched [Claude Managed Agents](https://www.anthropic.com/products/managed-agents) on the same day this project was released. The overlap is real - and intentional validation that autonomous development pipelines are the next frontier.
+
+**What Managed Agents provides:** Cloud-hosted Claude sessions on a schedule, sandboxed execution, session persistence, and GitHub access via MCP tools. It solves the infrastructure problem - _how do I run Claude autonomously?_
+
+**What Three-Body Agent provides:** The orchestration logic that turns autonomous Claude sessions into a functioning development team. Priority-based issue selection, dependency detection, sequential merge strategy, conflict-aware fixing, board state management, sprint automation, and multi-agent coordination with deduplication and concurrency controls.
+
+Think of it this way: Managed Agents is the engine. Three-Body Agent is the self-driving car.
+
+You can run this pipeline on GitHub Actions (as shipped), or adapt the workflow logic to run on Managed Agents infrastructure. The shell scripts, GraphQL queries, and prompt templates are the actual value - they work regardless of where Claude runs.
+
 ## License
 
 MIT
