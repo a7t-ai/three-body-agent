@@ -82,50 +82,75 @@ jobs:
           CURRENT_MILESTONE="${YEAR} CW ${THIS_WEEK_NUM}"
           echo "=== Scanning for TODO issues in milestone: ${CURRENT_MILESTONE} ==="
 
-          TODO_ITEMS=$(gh api graphql -f query='
-            query {
-              organization(login: "'"$PROJECT_ORG"'") {
-                projectV2(number: '"$PROJECT_NUMBER"') {
-                  items(first: 100) {
-                    nodes {
-                      id
-                      fieldValueByName(name: "Status") {
-                        ... on ProjectV2ItemFieldSingleSelectValue {
-                          name
-                        }
+          # Paginate through ALL project board items (100 per page)
+          TODO_FILE=$(mktemp)
+          HAS_NEXT="true"
+          CURSOR=""
+
+          while [ "$HAS_NEXT" = "true" ]; do
+            if [ -z "$CURSOR" ]; then
+              CURSOR_ARG="null"
+            else
+              CURSOR_ARG="\"$CURSOR\""
+            fi
+
+            gh api graphql -f query='
+              query {
+                organization(login: "'"$PROJECT_ORG"'") {
+                  projectV2(number: '"$PROJECT_NUMBER"') {
+                    items(first: 100, after: '"$CURSOR_ARG"') {
+                      pageInfo {
+                        hasNextPage
+                        endCursor
                       }
-                      content {
-                        ... on Issue {
-                          number
-                          title
-                          state
-                          milestone {
+                      nodes {
+                        id
+                        fieldValueByName(name: "Status") {
+                          ... on ProjectV2ItemFieldSingleSelectValue {
+                            name
+                          }
+                        }
+                        content {
+                          ... on Issue {
+                            number
                             title
+                            state
+                            milestone {
+                              title
+                            }
+                            labels(first: 20) {
+                              nodes { name }
+                            }
+                            body
                           }
-                          labels(first: 20) {
-                            nodes { name }
-                          }
-                          body
                         }
                       }
                     }
                   }
                 }
               }
-            }
-          ' --jq '
-            .data.organization.projectV2.items.nodes[]
-            | select(.fieldValueByName.name == "Todo")
-            | select(.content.state == "OPEN")
-            | select(.content.milestone.title == "'"$CURRENT_MILESTONE"'")
-            | {
-                itemId: .id,
-                number: .content.number,
-                title: .content.title,
-                labels: [.content.labels.nodes[].name],
-                bodyLength: (.content.body | length)
-              }
-          ')
+            ' > /tmp/page.json
+
+            jq -r '
+              .data.organization.projectV2.items.nodes[]
+              | select(.fieldValueByName.name == "Todo")
+              | select(.content.state == "OPEN")
+              | select(.content.milestone.title == "'"$CURRENT_MILESTONE"'")
+              | {
+                  itemId: .id,
+                  number: .content.number,
+                  title: .content.title,
+                  labels: [.content.labels.nodes[].name],
+                  bodyLength: (.content.body | length)
+                }
+            ' /tmp/page.json >> "$TODO_FILE"
+
+            HAS_NEXT=$(jq -r '.data.organization.projectV2.items.pageInfo.hasNextPage' /tmp/page.json)
+            CURSOR=$(jq -r '.data.organization.projectV2.items.pageInfo.endCursor' /tmp/page.json)
+          done
+
+          TODO_ITEMS=$(cat "$TODO_FILE")
+          rm -f "$TODO_FILE" /tmp/page.json
 
           if [ -z "$TODO_ITEMS" ]; then
             echo "No TODO issues found in milestone ${CURRENT_MILESTONE}. Standing by."
