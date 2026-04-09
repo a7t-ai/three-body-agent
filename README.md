@@ -142,7 +142,7 @@ Add these secrets to your repository (Settings → Secrets and variables → Act
 | Secret               | Description                                                                                                                                                          |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `ANTHROPIC_API_KEY`  | Anthropic API key for Claude Code CLI. Add as a repository secret - the workflows inject it automatically.                                                           |
-| `AGENT_PAT`          | GitHub Personal Access Token with `repo`, `project`, and `actions` scopes. Required for org-level project board access (`GITHUB_TOKEN` cannot access org ProjectV2). |
+| `AGENT_PAT`          | GitHub Personal Access Token with `repo`, `project`, and `workflow` scopes. Required for org-level project board access (`GITHUB_TOKEN` cannot access org ProjectV2). |
 | `TELEGRAM_BOT_TOKEN` | Telegram Bot API token (from [@BotFather](https://t.me/BotFather)). Optional - see note below.                                                                       |
 | `TELEGRAM_CHAT_ID`   | Telegram chat ID for notifications. Optional - see note below.                                                                                                       |
 
