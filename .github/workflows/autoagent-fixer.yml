@@ -107,10 +107,13 @@ jobs:
                 --jq '[.[] | select(.state != "SUCCESS" and .state != "SKIPPED")] | length' 2>/dev/null || echo "0")
               [ "$NOT_OK" -gt 0 ] && NEEDS_FIX="true"
 
-              # Changes requested
-              CHANGES=$(gh api "/repos/${{ github.repository }}/pulls/${NUM}/reviews" \
-                --jq '[.[] | select(.state == "CHANGES_REQUESTED")] | length' 2>/dev/null || echo "0")
-              [ "$CHANGES" -gt 0 ] && NEEDS_FIX="true"
+              # Use the PR's current reviewDecision (authoritative "does this PR
+              # currently need changes") instead of counting historical reviews —
+              # historical CHANGES_REQUESTED reviews are immutable and would keep
+              # this filter true forever, causing the fixer to loop indefinitely.
+              DECISION=$(gh pr view "$NUM" --repo "${{ github.repository }}" \
+                --json reviewDecision --jq '.reviewDecision' 2>/dev/null || echo "")
+              [ "$DECISION" = "CHANGES_REQUESTED" ] && NEEDS_FIX="true"
 
               # Merge conflicts
               [ "$MERGEABLE" = "CONFLICTING" ] && NEEDS_FIX="true"
