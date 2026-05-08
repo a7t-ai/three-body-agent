@@ -185,7 +185,6 @@ jobs:
 
           ISSUE_NUM=$(echo "$BEST_ISSUE" | jq -r '.number')
           ISSUE_TITLE=$(echo "$BEST_ISSUE" | jq -r '.title')
-          ITEM_ID=$(echo "$BEST_ISSUE" | jq -r '.itemId')
 
           if [ -z "$ISSUE_NUM" ] || [ "$ISSUE_NUM" = "null" ]; then
             echo "No suitable issue found."
@@ -216,43 +215,54 @@ jobs:
             fi
           fi
 
-          # Move to IN PROGRESS on the board
-          PROJECT_ID=$(gh api graphql -f query='
+          echo "issue_number=$ISSUE_NUM" >> $GITHUB_OUTPUT
+          echo "issue_title=$ISSUE_TITLE" >> $GITHUB_OUTPUT
+          echo "base_branch=$BASE_BRANCH" >> $GITHUB_OUTPUT
+          echo "model=claude-opus-4-6" >> $GITHUB_OUTPUT
+          echo "skip=false" >> $GITHUB_OUTPUT
+
+      - name: Move issue to In Progress on project board
+        if: steps.resolve.outputs.skip != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.AGENT_PAT }}
+          ISSUE_NUM: ${{ steps.resolve.outputs.issue_number }}
+        run: |
+          set -e
+
+          # Find project + status field metadata
+          PROJECT_DATA=$(gh api graphql -f query='
             query {
               organization(login: "'"$PROJECT_ORG"'") {
-                projectV2(number: '"$PROJECT_NUMBER"') { id }
-              }
-            }
-          ' --jq '.data.organization.projectV2.id')
-
-          STATUS_FIELD_ID=$(gh api graphql -f query="
-            query {
-              node(id: \"${PROJECT_ID}\") {
-                ... on ProjectV2 {
-                  field(name: \"Status\") {
+                projectV2(number: '"$PROJECT_NUMBER"') {
+                  id
+                  field(name: "Status") {
                     ... on ProjectV2SingleSelectField {
                       id
                       options { id name }
                     }
                   }
-                }
-              }
-            }
-          " --jq '.data.node.field.id')
-
-          IN_PROGRESS_ID=$(gh api graphql -f query="
-            query {
-              node(id: \"${PROJECT_ID}\") {
-                ... on ProjectV2 {
-                  field(name: \"Status\") {
-                    ... on ProjectV2SingleSelectField {
-                      options { id name }
+                  items(first: 100) {
+                    nodes {
+                      id
+                      content {
+                        ... on Issue { number }
+                      }
                     }
                   }
                 }
               }
             }
-          " --jq '.data.node.field.options[] | select(.name == "In Progress") | .id')
+          ')
+
+          PROJECT_ID=$(echo "$PROJECT_DATA" | jq -r '.data.organization.projectV2.id')
+          STATUS_FIELD_ID=$(echo "$PROJECT_DATA" | jq -r '.data.organization.projectV2.field.id')
+          IN_PROGRESS_ID=$(echo "$PROJECT_DATA" | jq -r '.data.organization.projectV2.field.options[] | select(.name == "In Progress") | .id')
+          ITEM_ID=$(echo "$PROJECT_DATA" | jq -r --argjson n "$ISSUE_NUM" '.data.organization.projectV2.items.nodes[] | select(.content.number == $n) | .id')
+
+          if [ -z "$ITEM_ID" ] || [ "$ITEM_ID" = "null" ]; then
+            echo "::warning::Issue #${ISSUE_NUM} is not on project board ${PROJECT_ORG}/${PROJECT_NUMBER}. Skipping board move."
+            exit 0
+          fi
 
           gh api graphql -f query="
             mutation {
@@ -267,13 +277,7 @@ jobs:
             }
           "
 
-          echo "Moved #${ISSUE_NUM} to IN PROGRESS"
-
-          echo "issue_number=$ISSUE_NUM" >> $GITHUB_OUTPUT
-          echo "issue_title=$ISSUE_TITLE" >> $GITHUB_OUTPUT
-          echo "base_branch=$BASE_BRANCH" >> $GITHUB_OUTPUT
-          echo "model=claude-opus-4-6" >> $GITHUB_OUTPUT
-          echo "skip=false" >> $GITHUB_OUTPUT
+          echo "Moved #${ISSUE_NUM} → In Progress on the project board"
 
       - name: Build start message
         id: msg
