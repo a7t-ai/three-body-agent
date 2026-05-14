@@ -1,0 +1,29 @@
+name: Feature request
+description: Suggest a new capability for the pipeline
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem are you trying to solve?
+      description: Describe the use case before the solution.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: "This doesn't require adding a framework dependency (LangGraph, CrewAI, etc.)"
+          required: true
+        - label: "This works with any OpenAI-compatible endpoint, not only Claude"

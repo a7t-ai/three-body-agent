@@ -1,0 +1,12 @@
+.DS_Store
+
+# Local-only working files
+NITTY-GRITTY.md
+TODO.md
+
+# Editor
+.idea/
+.vscode/
+
+# Logs
+*.log

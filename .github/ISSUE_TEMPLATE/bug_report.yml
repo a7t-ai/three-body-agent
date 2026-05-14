@@ -1,0 +1,49 @@
+name: Bug report
+description: Something in the workflows or prompts is broken
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for filing a bug. The faster we can reproduce it, the faster we can fix it.
+  - type: input
+    id: workflow
+    attributes:
+      label: Which workflow?
+      placeholder: "autoagent-implementer.yml / autoagent-fixer.yml / autoagent-merger.yml / ..."
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Include the workflow run URL or a log snippet if you have one.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction steps
+      placeholder: |
+        1. …
+        2. …
+        3. …
+    validations:
+      required: true
+  - type: input
+    id: model
+    attributes:
+      label: Model / endpoint
+      description: "Claude Code via Anthropic API, or an OpenAI-compatible endpoint? Which model?"
+      placeholder: "claude-opus-4-7 · Qwen3-Coder-30B via MLX · …"
+  - type: input
+    id: runner
+    attributes:
+      label: Runner
+      placeholder: "ubuntu-latest · self-hosted macOS · …"
