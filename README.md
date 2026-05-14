@@ -1,10 +1,14 @@
+<div align="center">
+
+<img src="assets/hero.png" alt="Three-Body Agent" width="600" />
+
 # Three-Body Agent
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-An autonomous development pipeline powered by GitHub Actions and Claude Code CLI. Five workflows pick issues from a project board, implement them, fix their own CI failures, merge green PRs, and keep the board updated — all without human intervention.
+**An autonomous development pipeline powered by GitHub Actions and Claude Code CLI. Five workflows pick issues from a project board, implement them, fix their own CI failures, merge green PRs, and keep the board updated — all without human intervention.**
 
-![Three luminous bodies orbiting in a stable configuration](assets/hero.png)
+</div>
 
 ```
 ┌─────────────────────────────────────────────────────┐
