@@ -17,10 +17,10 @@ on:
       model:
         description: 'Claude model to use'
         required: false
-        default: 'claude-opus-4-6'
+        default: 'claude-opus-4-7'
         type: choice
         options:
-          - claude-opus-4-6
+          - claude-opus-4-7
           - claude-sonnet-4-6
 
 concurrency:
@@ -218,7 +218,7 @@ jobs:
           echo "issue_number=$ISSUE_NUM" >> $GITHUB_OUTPUT
           echo "issue_title=$ISSUE_TITLE" >> $GITHUB_OUTPUT
           echo "base_branch=$BASE_BRANCH" >> $GITHUB_OUTPUT
-          echo "model=claude-opus-4-6" >> $GITHUB_OUTPUT
+          echo "model=claude-opus-4-7" >> $GITHUB_OUTPUT
           echo "skip=false" >> $GITHUB_OUTPUT
 
       - name: Move issue to In Progress on project board
