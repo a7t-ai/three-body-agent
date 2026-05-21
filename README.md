@@ -85,10 +85,6 @@ The number-one predictor of autonomous success is issue quality:
 
 `autoagent/<issue-number>-<slug>` (e.g. `autoagent/123-add-user-auth`). The issue-number prefix is required — Board Sync uses it to map branches back to issues.
 
-## Demo
-
-<video src="https://github.com/user-attachments/assets/2aa1bf2d-b856-4339-b230-372007655d21" controls></video>
-
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) and the [Code of Conduct](CODE_OF_CONDUCT.md).
