@@ -45,6 +45,8 @@
 
 Three systems in constant gravitational pull, each with its own orbit, producing stable results. Shell scripts and GraphQL — no framework, no SDK, no dependencies beyond `gh`, `jq`, and `curl`. The intelligence comes from the model.
 
+> **The Playbook.** The full architecture behind this repo is written down in [*Three-Body Agent: the Playbook*](https://a7t.ai/booklets/three-body-agent-playbook/): every design decision, the verbatim role prompts, the failure catalogue, and the cost dashboards. This repo is the runnable source; the book is the reasoning.
+
 ## 60-second quickstart
 
 1. Copy `.github/workflows/` and `.github/prompts/` into your repository.
