@@ -93,9 +93,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) and the [Code of Conduct](CODE_OF_CONDUCT
 
 These shipping apps use this pipeline to ship features autonomously:
 
-| [FareHawk](https://farehawk.app) | [Kinderuntersuchungsheft](https://kinderuntersuchungsheft.com) | [Einbürgerung Pro](https://einbuergerung.pro) | [Reellette](https://reellette.app) |
-| :---: | :---: | :---: | :---: |
-| <a href="https://farehawk.app"><img src="https://leocardz.com/assets/images/apps/farehawk.png" width="96" alt="FareHawk" /></a> | <a href="https://kinderuntersuchungsheft.com"><img src="https://leocardz.com/assets/images/apps/u-heft.png" width="96" alt="Kinderuntersuchungsheft" /></a> | <a href="https://einbuergerung.pro"><img src="https://leocardz.com/assets/images/apps/einbuergerung-pro.png" width="96" alt="Einbürgerung Pro" /></a> | <a href="https://reellette.app"><img src="https://leocardz.com/assets/images/apps/reellette.png" width="96" alt="Reellette" /></a> |
+| [FareHawk](https://farehawk.app) | [Kinderuntersuchungsheft](https://kinderuntersuchungsheft.com) | [Einbürgerung Pro](https://einbuergerung.pro) | [Reellette](https://reellette.app) | [Debut](https://debut.land) |
+| :---: | :---: | :---: | :---: | :---: |
+| <a href="https://farehawk.app"><img src="https://leocardz.com/assets/images/apps/farehawk.png" width="96" alt="FareHawk" /></a> | <a href="https://kinderuntersuchungsheft.com"><img src="https://leocardz.com/assets/images/apps/u-heft.png" width="96" alt="Kinderuntersuchungsheft" /></a> | <a href="https://einbuergerung.pro"><img src="https://leocardz.com/assets/images/apps/einbuergerung-pro.png" width="96" alt="Einbürgerung Pro" /></a> | <a href="https://reellette.app"><img src="https://leocardz.com/assets/images/apps/reellette.png" width="96" alt="Reellette" /></a> | <a href="https://debut.land"><img src="https://leocardz.com/assets/images/apps/debut.png" width="96" alt="Debut" /></a> |
 
 ## License
 
