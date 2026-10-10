@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="assets/hero.png" alt="Three-Body Agent" width="600" />
-
 # Three-Body Agent
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
